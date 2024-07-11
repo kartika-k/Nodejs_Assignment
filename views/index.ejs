@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome for icons -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+    <style>
+        .navbar-default {
+            background-color: #1e7add;
+            border-color: #1e7add;
+        }
+        .navbar-default .navbar-brand {
+            color: white;
+            font-weight: bold;
+            font-size: large;
+            text: center;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            // Toggle password visibility
+            $('.toggle-password').click(function(){
+                $(this).toggleClass('fa-eye fa-eye-slash');
+                var input = $($(this).attr('toggle'));
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                } else {
+                    input.attr('type', 'password');
+                }
+            });
+
+            // Toggle confirm password visibility
+            $('.toggle-confirm-password').click(function(){
+                $(this).toggleClass('fa-eye fa-eye-slash');
+                var input = $($(this).attr('toggle'));
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                } else {
+                    input.attr('type', 'password');
+                }
+            });
+
+            $( "#form1" ).submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/',
+                    data: $('#form1').serialize(),
+                    dataType: "json",
+                    success: function(response){
+                        $('#form1')[0].reset();
+                        document.getElementById("check").innerHTML = response.Success;
+
+                        setTimeout(function(){
+                            document.getElementById("check").innerHTML = "";
+                        }, 3000);
+
+                        if (response.Success == "You are regestered,You can login now.") {
+                            document.getElementById("aa").click();
+                        }
+                    },
+                    error: function() {
+                        // Handle errors
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Banao Nodejs Assignment</a>
+            </div>
+        </div>
+    </nav>
+
+   
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div>
+                    <p>Sign up</p>
+                </div>
+                <div class="form-group">
+                    <form id="form1" method="post">
+                        <input type="email" name="email" placeholder="E-mail" required="" class="form-control"><br/>
+                        <input type="text" name="username" placeholder="Username" required="" class="form-control"><br/>
+                        <div class="input-group">
+                            <input id="passwordInput" type="password" name="password" placeholder="Password" required="" class="form-control">
+                            <span class="input-group-addon">
+                                <i class="fa fa-eye toggle-password" toggle="#passwordInput"></i>
+                            </span>
+                        </div><br/>
+                        <div class="input-group">
+                            <input id="confirmPasswordInput" type="password" name="passwordConf" placeholder="Confirm Password" required="" class="form-control">
+                            <span class="input-group-addon">
+                                <i class="fa fa-eye toggle-confirm-password" toggle="#confirmPasswordInput"></i>
+                            </span>
+                        </div><br/>
+                        <input type="submit" value="Register" class="btn btn-success">
+                    </form>
+                </div>
+                
+                <div class="mssg bg-danger">
+                    <span id="check"></span>
+                </div>
+                <div>
+                    <span>Already Registered! <a href="/login">Login</a></span>
+                </div>
+                <div id="LangTable"><a href="/login" id="aa"></a></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

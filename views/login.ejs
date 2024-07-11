@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- FontAwesome for icons -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./css/styles.css">
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            // Toggle password visibility
+            $('.toggle-password').click(function(){
+                $(this).toggleClass('fa-eye fa-eye-slash');
+                var input = $($(this).attr('toggle'));
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                } else {
+                    input.attr('type', 'password');
+                }
+            });
+
+            $( "#form" ).submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: $('#form').serialize(),
+                    dataType: "json",
+                    success: function(response){
+                        $('#form')[0].reset();
+                        document.getElementById("check").innerHTML = response.Success;
+
+                        setTimeout(function(){
+                            document.getElementById("check").innerHTML = "";
+                        }, 3000);
+
+                        if (response.Success == "Success!") {
+                            document.getElementById("aa").click();
+                        }
+                    },
+                    error: function() {
+                        // Handle errors
+                    }
+                })
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div class="col-md-4 col-md-offset-4">
+        <div>
+            <p>Login</p>
+        </div>
+        <div class="form-group">
+            <form id="form" method="post">
+                <input type="text" name="email" placeholder="E-mail" required="" class="form-control"><br/>
+                <div class="input-group">
+                    <input id="passwordInput" type="password" name="password" placeholder="Password" required="" class="form-control">
+                    <span class="input-group-addon">
+                        <i class="fa fa-eye toggle-password" toggle="#passwordInput"></i>
+                    </span>
+                </div><br/>
+                <input type="submit" value="Login" class="btn btn-success">
+            </form>
+        </div>
+        <div class="mssg bg-danger">
+            <span id="check"></span>
+        </div>
+        <div id="LangTable"><a href="/profile" id="aa"></a></div>
+        
+        <div class="login-options">
+            <span>Forgot your password?</span><a href="/forgetpass">Click here</a>
+            <span>Don't have an account?</span><a href="/">Register here</a>
+        </div>
+        
+    </div>
+</body>
+</html>
